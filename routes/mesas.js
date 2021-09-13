@@ -1,16 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const mysql = require('../mysql').pool;
 
-router.get('/',(req, res, next) => {
-    res.status(200).send({
-        mensagem: "GET mesas."
-    });
-});
+const mesasController = require('../controllers/mesas');
 
-router.post('/', (req, res, next) => {
-    res.status(201).send({
-        mensagem: "POST mesas."
-    });
-});
+router.get('/', mesasController.getMesas);
+router.post('/', mesasController.postMesa);
+router.patch('/', mesasController.patchMesa);
 
 module.exports = router;
