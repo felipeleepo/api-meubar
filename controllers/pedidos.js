@@ -78,11 +78,10 @@ exports.postPedido = (req, res, next) => {
         }
 
         con.query(
-            'INSERT INTO pedidos (id_grupo, id_item, status, valor, obs) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO pedidos (id_grupo, id_item, valor, obs) VALUES (?, ?, ?, ?)',
             [
                 req.body.id_grupo,
                 req.body.id_item,
-                req.body.status,
                 req.body.valor,
                 req.body.obs
             ],
