@@ -11,7 +11,9 @@ exports.getItens = (req, res, next) => {
             })
         }
         con.query(
-            'SELECT * FROM itens',
+            `SELECT i.nome, i.descricao, i.preco, s.descricao AS secao, 0 AS qtd FROM itens AS i
+            JOIN secoes AS s ON i.id_secao = s.id_secao
+            WHERE i.ativo = TRUE`,
             (error, result, field) => {
                 con.release();
 
