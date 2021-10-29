@@ -77,14 +77,19 @@ exports.postPedido = (req, res, next) => {
             })
         }
 
+        // GERANDO INSERTS PELA QUANTIDADE DE PEDIDOS
+        let sql = 'INSERT INTO pedidos (id_grupo, id_item, valor, obs) VALUES\n'
+        let i = 0
+        req.body.pedidos.forEach(e => {
+            sql += ` (${req.body.id_grupo}, ${e.id_item}, ${e.preco}, '${req.body.obs}')`
+            if(i < req.body.pedidos.length-1)
+                sql += `,\n`
+            i++
+        });
+
         con.query(
-            'INSERT INTO pedidos (id_grupo, id_item, valor, obs) VALUES (?, ?, ?, ?)',
-            [
-                req.body.id_grupo,
-                req.body.id_item,
-                req.body.valor,
-                req.body.obs
-            ],
+            sql,
+            [],
             (error, result, field) => {
                 con.release();
 
