@@ -34,6 +34,39 @@ exports.getMesas = (req, res, next) => {
     });
 }
 
+exports.getMesasEmAtendimento = (req, res, next) => {
+
+    mysql.getConnection((erros, con) => {
+
+        if (erros) {
+            return res.status(500).send({
+                mensagem: "Falha na conexão com o banco",
+                error : erros
+            })
+        }
+        con.query(
+            `SELECT m.id_mesa
+            FROM mesas AS m
+            WHERE m.status = 1`,
+            (error, result, field) => {
+                con.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                }
+
+                res.status(200).send({
+                    mensagem: "GET mesas",
+                    response : result
+                })
+            }
+        )
+    });
+}
+
 exports.postMesa = (req, res, next) => {
 
     mysql.getConnection((erros, con) => {

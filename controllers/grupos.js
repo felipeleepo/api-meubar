@@ -11,7 +11,10 @@ exports.getGrupos = (req, res, next) => {
             })
         }
         con.query(
-            'SELECT * FROM grupos',
+            `SELECT g.id_grupo AS id, g.id_mesa FROM grupos AS g
+            JOIN mesas AS m ON g.id_mesa = m.id_mesa
+            WHERE m.status = 1
+            `,
             (error, result, field) => {
                 con.release();
 
