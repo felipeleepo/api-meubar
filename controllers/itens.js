@@ -1,6 +1,6 @@
 const mysql = require('../mysql').pool;
 
-exports.getItens = (req, res, next) => {
+exports.getItensAtivos = (req, res, next) => {
 
     mysql.getConnection((erros, con) => {
 
@@ -12,7 +12,7 @@ exports.getItens = (req, res, next) => {
         }
         con.query(
             `SELECT i.id_item, i.nome, i.descricao, i.preco, s.descricao AS secao, 0 AS qtd FROM itens AS i
-            JOIN secoes AS s ON i.id_secao = s.id_secao
+            JOIN secoes AS s ON i.id_secao = s.id   
             WHERE i.ativo = TRUE`,
             (error, result, field) => {
                 con.release();
