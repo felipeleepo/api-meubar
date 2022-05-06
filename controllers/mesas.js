@@ -11,7 +11,7 @@ exports.getMesas = (req, res, next) => {
             })
         }
         con.query(
-            `SELECT m.id_mesa, m.status, SUM(g.qtd) AS quantidade 
+            `SELECT m.id_mesa, m.status, SUM(g.qtd) AS quantidade, COUNT(g.id_grupo) AS grupo  
             FROM mesas AS m
             JOIN grupos AS g ON g.id_mesa = m.id_mesa
             GROUP BY m.id_mesa`,
