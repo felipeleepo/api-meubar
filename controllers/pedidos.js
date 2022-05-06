@@ -10,12 +10,11 @@ exports.visualizarPedidos = (req, res, next) => {
             })
         }
         con.query(
-            `SELECT m.id_mesa, p.id_grupo, status_pedido(p.status) AS status, i.nome, p.data_pedido FROM pedidos AS p
+            `SELECT m.id_mesa, grupo_id_apelido(p.id_grupo) as id_grupo, status_pedido(p.status) AS status, i.nome,  DATE_FORMAT(p.data_pedido, '%d/%m/%Y %H:%i:%s') as data_pedido FROM pedidos AS p
             JOIN itens AS i ON p.id_item = i.id_item
             JOIN grupos AS g ON p.id_grupo = g.id_grupo
             JOIN mesas AS m ON g.id_mesa = m.id_mesa
-            WHERE m.status = 1
-            ORDER BY  p.status , p.data_pedido;`,
+            ORDER BY  m.id_mesa, g.id_grupo, data_pedido;`,
             [],
             (error, result, field) => {
                 con.release();
