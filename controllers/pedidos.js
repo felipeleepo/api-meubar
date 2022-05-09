@@ -14,7 +14,7 @@ exports.visualizarPedidos = (req, res, next) => {
             JOIN itens AS i ON p.id_item = i.id_item
             JOIN grupos AS g ON p.id_grupo = g.id_grupo
             JOIN mesas AS m ON g.id_mesa = m.id_mesa
-            ORDER BY  m.id_mesa, g.id_grupo, data_pedido;`,
+            ORDER BY  m.id_mesa, g.id_grupo, p.status, data_pedido;`,
             [],
             (error, result, field) => {
                 con.release();
@@ -138,7 +138,7 @@ exports.postPedido = (req, res, next) => {
 
                 res.status(201).send({
                     mensagem: "Pedido criado.",
-                    id_mesa : result.insertId
+                    id_pedido : result.insertId
                 })
             }
         )
