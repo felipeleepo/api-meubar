@@ -14,6 +14,7 @@ exports.getMesas = (req, res, next) => {
             `SELECT m.id_mesa, m.status, SUM(g.qtd) AS quantidade, COUNT(g.id_grupo) AS grupo  
             FROM mesas AS m
             JOIN grupos AS g ON g.id_mesa = m.id_mesa
+            WHERE g.status = 1
             GROUP BY m.id_mesa`,
             (error, result, field) => {
                 con.release();

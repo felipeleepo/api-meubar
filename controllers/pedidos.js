@@ -10,11 +10,47 @@ exports.visualizarPedidos = (req, res, next) => {
             })
         }
         con.query(
-            `SELECT m.id_mesa, grupo_id_apelido(p.id_grupo) as id_grupo, status_pedido(p.status) AS status, i.nome,  DATE_FORMAT(p.data_pedido, '%d/%m/%Y %H:%i:%s') as data_pedido FROM pedidos AS p
+            `SELECT m.id_mesa, grupo_id_apelido(p.id_grupo) as id_grupo, p.id_pedido, status_pedido(p.status) AS status, i.nome,  DATE_FORMAT(p.data_pedido, '%d/%m/%Y %H:%i:%s') as data_pedido FROM pedidos AS p
             JOIN itens AS i ON p.id_item = i.id_item
             JOIN grupos AS g ON p.id_grupo = g.id_grupo
             JOIN mesas AS m ON g.id_mesa = m.id_mesa
             ORDER BY  m.id_mesa, g.id_grupo, p.status, data_pedido;`,
+            [],
+            (error, result, field) => {
+                con.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                }
+
+                res.status(200).send({
+                    mensagem: "GET pedidos",
+                    response : result
+                })
+            }
+        )
+    });
+}
+
+exports.visualizarPedidosCozinha = (req, res, next) => {
+    mysql.getConnection((erros, con) => {
+
+        if (erros) {
+            return res.status(500).send({
+                mensagem: "Falha na conexão com o banco",
+                error : erros
+            })
+        }
+        con.query(
+            `SELECT m.id_mesa, grupo_id_apelido(p.id_grupo) as id_grupo, p.id_pedido, status_pedido(p.status) AS status, i.nome,  DATE_FORMAT(p.data_pedido, '%d/%m/%Y %H:%i:%s') as data_pedido, p.obs, p.status AS ordem FROM pedidos AS p
+            JOIN itens AS i ON p.id_item = i.id_item
+            JOIN grupos AS g ON p.id_grupo = g.id_grupo
+            JOIN mesas AS m ON g.id_mesa = m.id_mesa
+            WHERE p.status IN (1,2,3)
+            ORDER BY  ordem, m.id_mesa, g.id_grupo, p.data_pedido;`,
             [],
             (error, result, field) => {
                 con.release();

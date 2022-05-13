@@ -6,6 +6,7 @@ const pedidosController = require('../controllers/pedidos');
 
 router.get('/grupo/:id_grupo', pedidosController.getPedidos);
 router.get('/visualizar', pedidosController.visualizarPedidos);
+router.get('/cozinha', pedidosController.visualizarPedidosCozinha);
 router.post('/', pedidosController.postPedido);
 router.patch('/', pedidosController.patchPedido);
 
